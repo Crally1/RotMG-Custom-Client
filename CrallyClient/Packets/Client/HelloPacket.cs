@@ -41,7 +41,7 @@ namespace CrallyClient.Packets.Client
             writeString("");                // User Token
         }
 
-        public new byte[] build()
+        public override byte[] build()
         {
             byte[] packet = base.build();
             packet[4] = ID;

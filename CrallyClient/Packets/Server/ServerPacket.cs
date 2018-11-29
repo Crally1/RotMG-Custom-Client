@@ -11,6 +11,69 @@ namespace CrallyClient.Packets.Server
 {
     class ServerPacket
     {
+        public enum ID
+        {
+            AOEPacket                 = 18,
+            AccountListPacket         = 1,
+            ActivePetUpdatePacket     = 56,
+            AllyShootPacket           = 63,
+            ArenaDeathPacket          = 34,
+            BuyResultPacket           = 87,
+            ClientStatPacket          = 66,
+            CreateSuccessPacket       = 44,
+            DamagePacket              = 58,
+            DeathPacket               = 104,
+            DeletePetPacket           = 78,
+            EnemyShootPacket          = 92,
+            EvolvePetPacket           = 97,
+            FailurePacket             =  0,
+            FilePacket                = 42,
+            GlobalNotificationPacket  = 90,
+            GoToPacket                = 76,
+            GuildResultPacket         = 65,
+            HatchPetPacket            = 22,
+            ImminentArenaWavePacket   = 23,
+            InvResultPacket           = 82,
+            InvitedToGuildPacket      = 83,
+            KeyInfoResponsePacket     = 33,
+            LoginRewardMsgPacket      = 37,
+            MapInfoPacket             = 85,
+            NameResultPacket          = 13,
+            NewAbilityPacket          = 60,
+            NewTickPacket             = 36,
+            NotificationPacket        = 47,
+            PasswordPromptPacket      = 48,
+            PetYardUpdatePacket       = 38,
+            PicPacket                 = 50,
+            PingPacket                =  4,
+            PlaySoundPacket           = 61,
+            QuestFetchResponsePacket  = 79,
+            QuestObjIdPacket          =  7,
+            QuestRedeemResponsePacket = 30,
+            ReconnectPacket           = 12,
+            ReskinUnlockPacket        = 98,
+            ServerPlayerShootPacket   =  5,
+            ShowEffectPacket          = 28,
+            TextPacket                = 20,
+            TradeAcceptedPacket       = 57,
+            TradeChangedPacket        = 93,
+            TradeDonePacket           = 77,
+            TradeRequestedPacket      = 14,
+            TradeStartPacket          = 15,
+            UpdatePacket              = 31,
+            VerifyEmailPacket         = 49,
+        }
+
+        public static ServerPacket PacketSelector(byte[] data)
+        {
+            switch ((ID)data[4])
+            {
+                case ID.MapInfoPacket: return new MapInfoPacket(data);
+
+                default: return new UnknownPacket(data);
+            }
+        }
+
         protected int size;
         protected byte[] data;
         
@@ -18,7 +81,7 @@ namespace CrallyClient.Packets.Server
 
         static private Crypto.RC4 rcin = new Crypto.RC4(Info.inKey);
 
-        protected ServerPacket(byte[] packet)
+        public ServerPacket(byte[] packet)
         {
             it = 0;
 

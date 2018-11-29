@@ -10,13 +10,19 @@ namespace CrallyClient.Packets.Client
     {
         const int ID = 86;
 
+        public int serial { get; }
+        public int time   { get; }
+
         public PongPacket(int serial, int time) : base()
         {
+            this.serial = serial;
+            this.time = time;
+
             writeInt(serial);
             writeInt(time);
         }
 
-        public new byte[] build()
+        public override byte[] build()
         {
             byte[] packet = base.build();
             packet[4] = ID;

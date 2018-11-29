@@ -71,7 +71,7 @@ namespace CrallyClient.Packets.Client
             stream.Write(bytes, 0, bytes.Length);
         }
 
-        public byte[] build()
+        public virtual byte[] build()
         {
             rcout.Text = stream.ToArray();
 

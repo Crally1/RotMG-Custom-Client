@@ -16,7 +16,7 @@ namespace CrallyClient.Packets.Client
             writeBool(fromArena);
         }
 
-        public new byte[] build()
+        public override byte[] build()
         {
             byte[] packet = base.build();
             packet[4] = ID;

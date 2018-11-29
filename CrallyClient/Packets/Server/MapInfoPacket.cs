@@ -24,7 +24,7 @@ namespace CrallyClient.Packets.Server
         string clientXML;
         string extraXML;
 
-        public MapInfoPacket(byte[] packet) : base(packet)
+        public MapInfoPacket(byte[] data) : base(data)
         {
             width = readInt();
             height = readInt();
@@ -41,6 +41,11 @@ namespace CrallyClient.Packets.Server
 
             clientXML = readString();
             extraXML = readString();
+        }
+
+        public override string ToString()
+        {
+            return $"[height:{height}:width:{width}:name:{name}:displayName:{displayName}]";
         }
     }
 }

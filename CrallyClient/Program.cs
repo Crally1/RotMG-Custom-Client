@@ -11,109 +11,47 @@ namespace CrallyClient
 {
     class Program
     {
-        static byte[] packet = new byte[20000];
-
         static int playerObjectID;
-
-        static void print(string info)
-        {
-            Console.WriteLine(DateTime.Now.ToString("[HH:mm:ss] ") + info);
-        }
-
-        static void error(string err)
-        {
-            ConsoleColor old = Console.ForegroundColor;
-            Console.ForegroundColor = ConsoleColor.Red;
-            print(err);
-            Console.ForegroundColor = old;
-        }
-
-        static byte[] readPacket(NetworkStream stream)
-        {
-            stream.Read(packet, 0, 5);
-            int size = ((packet[0] << 24) | (packet[1] << 16) | (packet[2] << 8) | (packet[3]) - 5);
-
-            if (size == -5)
-                size = 0;
-
-            print($"Read packet [ID:0x{packet[4].ToString("X0")}]: size={size}");
-
-            int read = 0;
-            while (read != size)
-            {
-                read += stream.Read(packet, 5 + read, size - read);
-            }
-
-            return packet;
-        }
-
-        static string policyRequest(TcpClient client, byte[] data)
-        {
-            print("Requesting policy file");
-
-            client.Connect("13.57.254.131", 843);
-            NetworkStream stream = client.GetStream();
-            stream.Write(Encoding.UTF8.GetBytes("<policy-file-request/>\0"), 0, 23);
-            stream.Read(data, 0, data.Length);
-            client.Close();
-
-            print("Received policy file");
-
-            return Encoding.UTF8.GetString(data).TrimEnd((char)0);
-        }
 
         static void Main(string[] args)
         {
             Timer.init();
-            byte[] data = new byte[50000];
-            TcpClient client = new TcpClient();
-            NetworkStream stream;
 
             const string ip = "13.57.254.131";
             const int port = 2050;
 
-            policyRequest(client, data);
+            Connection connection = new Connection(ip, port);
 
-            print("Opening socket to " + ip + " on " + port);
-            client = new TcpClient();
-            client.Connect(ip, port);
-            stream = client.GetStream();
+            Log.Info("Sending HELLO packet");
 
-            print("Sending HELLO packet");
-            byte[] hello = new HelloPacket("crally68@gmail.com", "Clocker12345").build();
-            stream.Write(hello, 0, hello.Length);
+            connection.Send(new HelloPacket("crally68@gmail.com", "Clocker12345"));
 
-            print("Receiving map info");
-            readPacket(stream);
-            MapInfoPacket mapInfo = new MapInfoPacket(packet);
+            MapInfoPacket mapInfo = new MapInfoPacket(connection.ReadBytes());
 
-            print("Sending LOAD packet");
-            byte[] load = new LoadPacket(1, false).build();
-            stream.Write(load, 0, load.Length);
+            Log.Info("Received map info");
+            Log.Info("Sending LOAD packet");
 
-            readPacket(stream);
-            CreateSuccessPacket success = new CreateSuccessPacket(packet);
-            print("Received CREATESUCCESS packet");
+            connection.Send(new LoadPacket(1, false));
+
+            CreateSuccessPacket success = new CreateSuccessPacket(connection.ReadBytes());
+
+            Log.Info("Received CREATESUCCESS packet");
 
             playerObjectID = success.objectID;
 
-            print("CONNECTED");
-
             Location lastPos = new Location(0, 0);
-            int updateCount = 0;
-            int prevTime = Timer.getTime();
             while (true)
             {
-                readPacket(stream);   
+                byte[] packet = connection.ReadBytes(); 
 
                 switch (packet[4])
                 {
                     case 0x1F:
                         {
                             new UpdatePacket(packet);
-                            byte[] update = new UpdateAckPacket().build();
-                            stream.Write(update, 0, update.Length);
-                            print($"UpdateAck Sent [{++updateCount}]");
+                            connection.Send(new UpdateAckPacket());
+
+                            Log.Info("Update -> UpdateAck");
                         }
                         break;
 
@@ -124,18 +62,16 @@ namespace CrallyClient
                             {
                                 if (tick.statuses[i].objectID == playerObjectID)
                                 {
-                                    print("Updating position");
+                                    Log.Info("Updating position");
                                     lastPos = tick.statuses[i].pos;
                                     break;
                                 }
                             }
 
                             int time = Timer.getTime();
-                            byte[] move = new MovePacket(tick.tickID, time, lastPos).build();
-                            stream.Write(move, 0, move.Length);
-                            print($"Tick [{tick.tickID}:{tick.tickTime}] -> " +
-                                $"Move [ID:{tick.tickID}:X:{lastPos.x.ToString("F2")}:Y:{lastPos.y.ToString("F2")}:Time:{time}]");
-                            prevTime = time;
+                            connection.Send(new MovePacket(tick.tickID, time, lastPos));
+                            Log.Info($"Tick [{tick.tickID}:{tick.tickTime}] -> " +
+                                     $"Move [ID:{tick.tickID}:X:{lastPos.x.ToString("F2")}:Y:{lastPos.y.ToString("F2")}:Time:{time}]");
                         }
                         break;
 
@@ -145,27 +81,27 @@ namespace CrallyClient
                     //    }
                     //    break;
 
-                    case 0x14:
-                        {
-                            new TextPacket(packet).print();
-                        }
-                        break;
+                    //case 0x14:
+                    //    {
+                    //        new TextPacket(packet).print();
+                    //    }
+                    //    break;
 
                     case 0x04:
                         {
                             PingPacket ping = new PingPacket(packet);
-                            print($"Ping [{ping.serial}]");
+                            PongPacket pong = new PongPacket(ping.serial, Timer.getTime());
 
-                            int time = Timer.getTime();
-                            byte[] pong = new PongPacket(ping.serial, time).build();
-                            stream.Write(pong, 0, pong.Length);
-                            print($"Pong [{ping.serial}:{time}]");
+                            connection.Send(pong);
+
+                            Log.Info($"Ping [{ping.serial}] -> Pong [{pong.serial}:{pong.time}]");
                         }
                         break;
 
                     case 0x00:
                         {
-                            error(new ErrorPacket(packet).get());
+                            FailurePacket error = new FailurePacket(packet);
+                            Log.Error(error.ToString());
                             return;
                         }
                         break;

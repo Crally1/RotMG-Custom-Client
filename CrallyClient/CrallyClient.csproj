@@ -43,11 +43,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connection.cs" />
     <Compile Include="Crypto\RC4.cs" />
     <Compile Include="Crypto\RSA.cs" />
     <Compile Include="Info.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="LocationRecord.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Packets\Client\ClientPacket.cs" />
     <Compile Include="Packets\Client\HelloPacket.cs" />
     <Compile Include="Packets\Client\LoadPacket.cs" />
@@ -55,7 +57,7 @@
     <Compile Include="Packets\Client\PongPacket.cs" />
     <Compile Include="Packets\Client\UpdateAckPacket.cs" />
     <Compile Include="Packets\Server\CreateSuccessPacket.cs" />
-    <Compile Include="Packets\Server\ErrorPacket.cs" />
+    <Compile Include="Packets\Server\FailurePacket.cs" />
     <Compile Include="Packets\Server\MapInfoPacket.cs" />
     <Compile Include="Packets\Server\NewTickPacket.cs" />
     <Compile Include="Packets\Server\PingPacket.cs" />

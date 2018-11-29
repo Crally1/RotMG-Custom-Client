@@ -22,7 +22,7 @@ namespace CrallyClient.Packets.Client
             //writeFloat(pos.y);
         }
 
-        public new byte[] build()
+        public override byte[] build()
         {
             byte[] packet = base.build();
             packet[4] = ID;
