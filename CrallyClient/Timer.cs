@@ -9,7 +9,7 @@ namespace CrallyClient
     class Timer
     {
         private static bool initialized = false;
-        private static long start = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+        private static long start = DateTimeOffset.Now.ToUnixTimeMilliseconds() + 11380;
 
         public static void init()
         {

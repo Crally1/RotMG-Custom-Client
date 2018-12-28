@@ -18,7 +18,7 @@ namespace CrallyClient
         public Connection(string ip, int port)
         {
             client = new TcpClient();
-            buffer = new byte[16384];
+            buffer = new byte[30480];
 
             Log.Info($"Connecting to {ip}:{port}");
             client.Connect(ip, port);
@@ -56,18 +56,20 @@ namespace CrallyClient
 
         public byte[] ReadBytes()
         {
-            stream.Read(buffer, 0, 5);
-            int size = ((buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | (buffer[3]) - 5);
+            int hRead = 0;
+            while (hRead != 5)
+            {
+                hRead += stream.Read(buffer, hRead, 5 - hRead);
+            }
 
-            if (size == -5)
-                size = 0;
+            int size = ((buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | (buffer[3]));
 
             Log.Info($"Read packet [ID:{(ServerPacket.ID)buffer[4]}]: size={size}");
 
             int read = 0;
-            while (read != size)
+            while (read != size - 5)
             {
-                read += stream.Read(buffer, 5 + read, size - read);
+                read += stream.Read(buffer, 5 + read, size - 5 - read);
             }
 
             return buffer;

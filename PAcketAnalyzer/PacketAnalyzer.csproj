@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CE189432-5EEC-43DB-9FBB-74ECE30BD7F8}</ProjectGuid>
+    <ProjectGuid>{96C839E8-54C2-45A5-A37B-655ABACABB52}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>CrallyClient</RootNamespace>
-    <AssemblyName>CrallyClient</AssemblyName>
+    <RootNamespace>PAcketAnalyzer</RootNamespace>
+    <AssemblyName>PAcketAnalyzer</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -43,41 +42,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Connection.cs" />
-    <Compile Include="Crypto\RC4.cs" />
-    <Compile Include="Crypto\RSA.cs" />
     <Compile Include="Info.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="LocationRecord.cs" />
-    <Compile Include="Log.cs" />
-    <Compile Include="Packets\Client\ClientPacket.cs" />
-    <Compile Include="Packets\Client\GoToAck.cs" />
-    <Compile Include="Packets\Client\HelloPacket.cs" />
-    <Compile Include="Packets\Client\LoadPacket.cs" />
-    <Compile Include="Packets\Client\MovePacket.cs" />
-    <Compile Include="Packets\Client\PongPacket.cs" />
-    <Compile Include="Packets\Client\UpdateAckPacket.cs" />
-    <Compile Include="Packets\Server\CreateSuccessPacket.cs" />
-    <Compile Include="Packets\Server\FailurePacket.cs" />
-    <Compile Include="Packets\Server\GoToPacket.cs" />
-    <Compile Include="Packets\Server\MapInfoPacket.cs" />
-    <Compile Include="Packets\Server\NewTickPacket.cs" />
-    <Compile Include="Packets\Server\PingPacket.cs" />
-    <Compile Include="Packets\Server\ServerPacket.cs" />
-    <Compile Include="Packets\Server\ShowEffectPacket.cs" />
-    <Compile Include="Packets\Server\TextPacket.cs" />
-    <Compile Include="Packets\Server\UnknownPacket.cs" />
-    <Compile Include="Packets\Server\UpdatePacket.cs" />
+    <Compile Include="PacketData.cs" />
+    <Compile Include="Packets\HelloPacket.cs" />
+    <Compile Include="Packets\LoadPacket.cs" />
+    <Compile Include="Packets\MovePacket.cs" />
+    <Compile Include="Packets\Packet.cs" />
+    <Compile Include="Packets\PongPacket.cs" />
+    <Compile Include="Packets\UpdateAckPacket.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StatData.cs" />
-    <Compile Include="Status.cs" />
-    <Compile Include="Tile.cs" />
-    <Compile Include="Timer.cs" />
+    <Compile Include="RC4.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

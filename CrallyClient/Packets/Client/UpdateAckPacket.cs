@@ -8,8 +8,6 @@ namespace CrallyClient.Packets.Client
 {
     class UpdateAckPacket : ClientPacket
     {
-        const int ID = 80;
-
         public UpdateAckPacket() : base()
         {
             // No fields
@@ -18,7 +16,7 @@ namespace CrallyClient.Packets.Client
         public override byte[] build()
         {
             byte[] packet = base.build();
-            packet[4] = ID;
+            packet[4] = (byte)ID.UpdateAckPacket;
             return packet;
         }
     }

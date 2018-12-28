@@ -8,18 +8,18 @@ namespace CrallyClient.Packets.Server
 {
     class FailurePacket : ServerPacket
     {
-        public int ID { get; }
-        public string msg { get; }
+        public int Code { get; }
+        public string Text { get; }
 
         public FailurePacket(byte[] packet) : base(packet)
         {
-            ID = readInt();
-            msg = readString();
+            Code = ReadInt();
+            Text = ReadString();
         }
 
         public override string ToString()
         {
-            return $"Error [ID:{ID}]: {msg}";
+            return $"Error [ID:{Code}]: {Text}";
         }
     }
 }

@@ -8,44 +8,44 @@ namespace CrallyClient.Packets.Server
 {
     class MapInfoPacket : ServerPacket
     {
-        int width;
-        int height;
+        public int Width  { get; }
+        public int Height { get; }
 
-        string name;
-        string displayName;
+        public string Name        { get; }
+        public string DisplayName { get; }
 
-        int fp;
-        int background;
-        int difficulty;
+        public int Fp         { get; }
+        public int Background { get; }
+        public int Difficulty { get; }
 
-        bool allowPlayerTeleport;
-        bool showDisplays;
+        public bool AllowPlayerTeleport { get; }
+        public bool ShowDisplays        { get; }
 
-        string clientXML;
-        string extraXML;
+        public string ClientXML { get; }
+        public string ExtraXML  { get; }
 
         public MapInfoPacket(byte[] data) : base(data)
         {
-            width = readInt();
-            height = readInt();
+            Width = ReadInt();
+            Height = ReadInt();
 
-            name = readString();
-            displayName = readString();
+            Name = ReadString();
+            DisplayName = ReadString();
 
-            fp = readInt();
-            background = readInt();
-            difficulty = readInt();
+            Fp = ReadInt();
+            Background = ReadInt();
+            Difficulty = ReadInt();
 
-            allowPlayerTeleport = readBool();
-            showDisplays = readBool();
+            AllowPlayerTeleport = ReadBool();
+            ShowDisplays = ReadBool();
 
-            clientXML = readString();
-            extraXML = readString();
+            ClientXML = ReadString();
+            ExtraXML = ReadString();
         }
 
         public override string ToString()
         {
-            return $"[height:{height}:width:{width}:name:{name}:displayName:{displayName}]";
+            return $"[height:{Height}:width:{Width}:name:{Name}:displayName:{DisplayName}]";
         }
     }
 }

@@ -8,11 +8,11 @@ namespace CrallyClient.Packets.Server
 {
     class PingPacket : ServerPacket
     {
-        public int serial;
+        public int Serial { get; }
 
         public PingPacket(byte[] packet) : base(packet)
         {
-            serial = readInt();
+            Serial = ReadInt();
         }
     }
 }

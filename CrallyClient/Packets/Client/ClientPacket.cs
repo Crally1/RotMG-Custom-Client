@@ -9,6 +9,56 @@ namespace CrallyClient.Packets.Client
 {
     class ClientPacket
     {
+        protected enum ID : byte
+        {
+            AOEAckPacket = 102,
+            AcceptTradePacket = 17,
+            ActivePetUpdateRequestPacket = 53,
+            BuyPacket = 68,
+            CancelTradePacket = 55,
+            ChangeGuildRankPacket = 51,
+            ChangeTradePacket = 26,
+            CheckCreditsPacket = 35,
+            ChooseNamePacket = 9,
+            ClaimLoginRewardMsgPacket = 103,
+            CreateGuildPacket = 40,
+            CreatePacket = 52,
+            EditAccountListPacket = 21,
+            EnemyHitPacket = 96,
+            EnterArenaPacket = 89,
+            EscapePacket = 41,
+            GoToAckPacket = 81,
+            GroundDamagePacket = 84,
+            GuildInvitePacket = 75,
+            GuildRemovePacket = 101,
+            HelloPacket = 100,
+            InvDropPacket = 46,
+            InvSwapPacket = 27,
+            JoinGuildPacket = 94,
+            LoadPacket = 62,
+            MovePacket = 74,
+            OtherHitPacket = 25,
+            PetChangeFormMsgPacket = 64,
+            PetUpgradeRequestPacket = 11,
+            PlayerHitPacket = 67,
+            PlayerShootPacket = 8,
+            PlayerTextPacket = 59,
+            PongPacket = 86,
+            QuestFetchAskPacket = 16,
+            QuestRedeemPacket = 24,
+            QuestRoomMsgPacket = 88,
+            RequestTradePacket = 6,
+            ReskinPacket = 69,
+            ReskinUnlockPacket = 98,
+            SetConditionPacket = 19,
+            ShootAckPacket = 3,
+            SquareHitPacket = 95,
+            TeleportPacket = 99,
+            UpdateAckPacket = 80,
+            UseItemPacket = 39,
+            UsePortalPacket = 91,
+        }
+
         protected MemoryStream stream;
 
         static private Crypto.RC4 rcout = new Crypto.RC4(Info.outKey);

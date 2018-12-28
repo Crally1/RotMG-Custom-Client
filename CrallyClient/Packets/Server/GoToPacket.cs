@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace CrallyClient.Packets.Server
 {
-    class CreateSuccessPacket : ServerPacket
+    class GoToPacket : ServerPacket
     {
         public int ObjectID { get; }
-        public int CharID { get; }
+        public Location Pos { get; }
 
-        public CreateSuccessPacket(byte[] packet) : base(packet)
+        public GoToPacket(byte[] packet) : base(packet)
         {
             ObjectID = ReadInt();
-            CharID = ReadInt();
+            Pos = new Location(ReadFloat(), ReadFloat());
         }
     }
 }

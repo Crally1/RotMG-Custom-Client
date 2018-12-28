@@ -11,7 +11,9 @@ namespace CrallyClient.Packets.Server
 {
     class ServerPacket
     {
-        public enum ID
+        static private Crypto.RC4 rcin = new Crypto.RC4(Info.inKey);
+
+        public enum ID : byte
         {
             AOEPacket                 = 18,
             AccountListPacket         = 1,
@@ -64,28 +66,16 @@ namespace CrallyClient.Packets.Server
             VerifyEmailPacket         = 49,
         }
 
-        public static ServerPacket PacketSelector(byte[] data)
-        {
-            switch ((ID)data[4])
-            {
-                case ID.MapInfoPacket: return new MapInfoPacket(data);
-
-                default: return new UnknownPacket(data);
-            }
-        }
-
         protected int size;
         protected byte[] data;
-        
-        private int it;
 
-        static private Crypto.RC4 rcin = new Crypto.RC4(Info.inKey);
+        private int it;
 
         public ServerPacket(byte[] packet)
         {
             it = 0;
 
-            size = (packet[0] << 24) | (packet[1] << 16) | (packet[2] << 8) | (packet[3]) - 5;
+            size = ((packet[0] << 24) | (packet[1] << 16) | (packet[2] << 8) | (packet[3])) - 5;
             data = new byte[size];
             Array.Copy(packet, 5, data, 0, size);
 
@@ -93,27 +83,27 @@ namespace CrallyClient.Packets.Server
             data = rcin.EnDeCrypt();
         }
 
-        protected int readInt()
+        protected int ReadInt()
         {
             return (data[it++] << 24) | (data[it++] << 16) | (data[it++] << 8) | (data[it++]);
         }
 
-        protected short readShort()
+        protected short ReadShort()
         {
             return (short)(data[it++] << 8 | data[it++]);
         }
 
-        protected byte readByte()
+        protected byte ReadByte()
         {
             return data[it++];
         }
 
-        protected bool readBool()
+        protected bool ReadBool()
         {
             return data[it++] != 0;
         }
 
-        protected float readFloat()
+        protected float ReadFloat()
         {
             byte[] bytes = new byte[4];
             float[] fl = new float[1];
@@ -126,9 +116,9 @@ namespace CrallyClient.Packets.Server
             return fl[0];
         }
 
-        protected string readString()
+        protected string ReadString()
         {
-            short length = readShort();
+            short length = ReadShort();
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < length; ++i)
                 builder.Append((char)data[it++]);

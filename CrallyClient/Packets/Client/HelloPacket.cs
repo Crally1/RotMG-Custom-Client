@@ -9,8 +9,6 @@ namespace CrallyClient.Packets.Client
 {
     class HelloPacket : ClientPacket
     {
-        const byte ID = 100;
-
         public HelloPacket(string guid, string passwd) : base()
         {
             Random random = new Random();
@@ -44,7 +42,7 @@ namespace CrallyClient.Packets.Client
         public override byte[] build()
         {
             byte[] packet = base.build();
-            packet[4] = ID;
+            packet[4] = (byte)ID.HelloPacket;
             return packet;
         }
     }

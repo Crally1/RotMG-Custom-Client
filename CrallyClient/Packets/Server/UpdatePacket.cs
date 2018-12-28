@@ -12,7 +12,7 @@ namespace CrallyClient.Packets.Server
 
         public UpdatePacket(byte[] packet) : base(packet)
         {
-            short tilesLength = readShort();
+            short tilesLength = ReadShort();
             //tiles = new Tile[tilesLength];
 
             //Console.WriteLine("Tile Count: " + tilesLength);

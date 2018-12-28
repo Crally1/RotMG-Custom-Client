@@ -8,15 +8,13 @@ namespace CrallyClient.Packets.Client
 {
     class PongPacket : ClientPacket
     {
-        const int ID = 86;
-
-        public int serial { get; }
-        public int time   { get; }
+        public int Serial { get; }
+        public int Time   { get; }
 
         public PongPacket(int serial, int time) : base()
         {
-            this.serial = serial;
-            this.time = time;
+            this.Serial = serial;
+            this.Time = time;
 
             writeInt(serial);
             writeInt(time);
@@ -25,7 +23,7 @@ namespace CrallyClient.Packets.Client
         public override byte[] build()
         {
             byte[] packet = base.build();
-            packet[4] = ID;
+            packet[4] = (byte)ID.PongPacket;
             return packet;
         }
     }

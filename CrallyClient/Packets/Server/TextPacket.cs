@@ -8,25 +8,25 @@ namespace CrallyClient.Packets.Server
 {
     class TextPacket : ServerPacket
     {
-        string name;
-        int stars;
-        string recipient;
-        string text;
-        string cleanText;
+        string name      { get; }
+        int    stars     { get; }
+        string recipient { get; }
+        string text      { get; }
+        string cleanText { get; }
 
         public TextPacket(byte[] packet) : base(packet)
         {
-            name = readString();
-            readInt();  // ObjectID
-            stars = readInt();
-            readByte();  // Bubble Time
-            recipient = readString();
-            text = readString();
-            cleanText = readString();
-            readBool(); // Is Supported
+            name = ReadString();
+            ReadInt();   // ObjectID
+            stars = ReadInt();
+            ReadByte();  // Bubble Time
+            recipient = ReadString();
+            text = ReadString();
+            cleanText = ReadString();
+            ReadBool();  // Is Supported
         }
 
-        public void print()
+        public void Print()
         {
             var old = Console.ForegroundColor;
 

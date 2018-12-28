@@ -6,18 +6,21 @@ using System.Threading.Tasks;
 
 namespace CrallyClient.Packets.Client
 {
-    class LoadPacket : ClientPacket
+    class GoToAckPacket : ClientPacket
     {
-        public LoadPacket(int charID, bool fromArena) : base()
+        public int Time { get; }
+
+        public GoToAckPacket(int time) : base()
         {
-            writeInt(charID);
-            writeBool(fromArena);
+            Time = time;
+
+            writeInt(Time);
         }
 
         public override byte[] build()
         {
             byte[] packet = base.build();
-            packet[4] = (byte)ID.LoadPacket;
+            packet[4] = (byte)ID.GoToAckPacket;
             return packet;
         }
     }

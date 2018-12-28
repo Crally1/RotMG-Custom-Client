@@ -8,17 +8,17 @@ namespace CrallyClient.Packets.Server
 {
     class ShowEffectPacket : ServerPacket
     {
-        int effectType;
-        int targetObjectID;
-        Location pos1;
-        Location pos2;
-        int color;
-        float duration;
+        int EffectType { get; }
+        int TargetObjectID { get; }
+        Location pos1 { get; }
+        Location pos2 { get; }
+        int color { get; }
+        float duration { get; }
 
         public ShowEffectPacket(byte[] packet) : base(packet)
         {
-            effectType = readInt();
-            targetObjectID = readByte();
+            EffectType = ReadInt();
+            TargetObjectID = ReadByte();
 
             //Console.WriteLine("Type: " + effectType);
             //Console.WriteLine("Target Object ID: " + targetObjectID);

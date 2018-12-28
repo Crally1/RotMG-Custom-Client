@@ -8,24 +8,26 @@ namespace CrallyClient.Packets.Client
 {
     class MovePacket : ClientPacket
     {
-        const int ID = 74;
-
-        public MovePacket(int id, int time, Location pos) : base()
+        public MovePacket(int id, int time, Location pos, LocationRecord[] records) : base()
         {
             writeInt(id);
             writeInt(time);
             writeFloat(pos.x);
             writeFloat(pos.y);
-            writeShort(0);
-            //writeInt(time);
-            //writeFloat(pos.x);
-            //writeFloat(pos.y);
+            writeShort((short)records.Length);
+            
+            for (int i = 0; i < records.Length; ++i)
+            {
+                writeInt(records[i].Time);
+                writeFloat(records[i].X);
+                writeFloat(records[i].Y);
+            }
         }
 
         public override byte[] build()
         {
             byte[] packet = base.build();
-            packet[4] = ID;
+            packet[4] = (byte)ID.MovePacket;
             return packet;
         }
     }

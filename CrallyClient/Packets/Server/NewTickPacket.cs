@@ -8,11 +8,11 @@ namespace CrallyClient.Packets.Server
 {
     class NewTickPacket : ServerPacket
     {
-        public int tickID;
-        public int tickTime;
-        public Status[] statuses;
-        
-        static bool isUTF(byte id)
+        public int      TickID   { get; }
+        public int      TickTime { get; }
+        public Status[] Statuses { get; }
+
+        static bool IsUTF(byte id)
         {
             switch (id)
             {
@@ -30,25 +30,25 @@ namespace CrallyClient.Packets.Server
 
         public NewTickPacket(byte[] packet) : base(packet)
         {
-            tickID = readInt();
-            tickTime = readInt();
+            TickID = ReadInt();
+            TickTime = ReadInt();
 
-            short statusLength = readShort();
-            statuses = new Status[statusLength];
+            short statusLength = ReadShort();
+            Statuses = new Status[statusLength];
             for (int i = 0; i < statusLength; ++i)
             {
-                int objectID = readInt();
-                Location pos = new Location(readFloat(), readFloat());
+                int objectID = ReadInt();
+                Location pos = new Location(ReadFloat(), ReadFloat());
 
-                short statLength = readShort();
+                short statLength = ReadShort();
                 StatData[] data = new StatData[statLength];
                 for (int j = 0; j < statLength; ++j)
                 {
-                    byte id = readByte();
-                    data[j] = isUTF(id) ? new StatData(id, readString()) : new StatData(id, readInt());
+                    byte id = ReadByte();
+                    data[j] = IsUTF(id) ? new StatData(id, ReadString()) : new StatData(id, ReadInt());
                 }
 
-                statuses[i] = new Status(objectID, pos, data);
+                Statuses[i] = new Status(objectID, pos, data);
             }
         }
     }
